@@ -6,11 +6,12 @@ const http = require("http").Server(app)
 const todoService = require('./services/todoService')
 const mongoose = require("mongoose")
 const frontendUrl = process.env.fornturl
-const io = require("socket.io")(http,{
-    cors:{
-        origin:frontendUrl
-    }
-})
+// const io = require("socket.io")(http,{
+//     cors:{
+//         origin:frontendUrl
+//     }
+// })
+const io = require("socket.io")(http)
 
 const cors = require("cors")
 
@@ -19,12 +20,12 @@ const router = require("./routes/index")
 dotenv.config({ path: "./config.env" })
 const DBKey = process.env.DB
 
-app.use(cors({credentials:true,origin: frontendUrl}));
+// app.use(cors({credentials:true,origin: frontendUrl}));
 app.use(express.json());
 
 // app.use(cookiParser())
 
-app.use("/", router)
+app.use("/api/", router)
 
 mongoose.connect(DBKey, { useNewurlParser: true })
     .then(() => { console.log("MoongoDB is connected") })
@@ -85,10 +86,10 @@ const path = require('path');
 const { getTodos } = require("./controllers/todoController")
 if (process.env.NODE_ENV === 'production') {
     // Serve any static files
-    app.use(express.static('client/build'));
+    app.use(express.static('clientBuild/dist'));
     // Handle React routing, return all requests to React app
     app.get('/*', function (req, res) {
-        res.sendFile(path.resolve('client', 'build', 'index.html'));
+        res.sendFile(path.resolve('clientBuild', 'dist', 'index.html'));
     });
 }
 
