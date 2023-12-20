@@ -11,7 +11,7 @@ const frontendUrl = process.env.fornturl
 //         origin:frontendUrl
 //     }
 // })
-const io = require("socket.io")(http)
+const io = require("socket.io")(http,{})
 
 const cors = require("cors")
 
